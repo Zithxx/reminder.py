@@ -2,7 +2,6 @@ name: Daily Vitamin Reminder
 
 on:
   schedule:
-    # 23:59 UTC is exactly 23:59 in Portugal during winter
     - cron: '59 23 * * *'
   workflow_dispatch: 
 
@@ -22,4 +21,7 @@ jobs:
         run: pip install requests
 
       - name: Run script
+        env:
+          # This line connects your GitHub Secret to your Python script
+          MY_PHONE_NUMBER: ${{ secrets.MY_PHONE_NUMBER }}
         run: python main.py
