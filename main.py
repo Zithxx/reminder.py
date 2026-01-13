@@ -7,7 +7,7 @@ message_text = f'This is a reminder to take your vitamins 🩷 Love you 🩷 {im
 
 def send_text():
     response = requests.post('https://textbelt.com/text', {
-        'number': phone_number,
+        'number': phone_number,   # Make sure this is 'number'
         'message': message_text,
         'key': 'textbelt',
     })
@@ -15,7 +15,8 @@ def send_text():
     result = response.json()
 
     if result.get('success'):
-        print(f"Success! Message sent. Quota remaining: {result.get('quotaRemaining')}")
+        print(f"Success! Message sent to {phone_number}")
+        print(f"Quota remaining: {result.get('quotaRemaining')}")
     else:
         print(f"Failed: {result.get('error')}")
 
