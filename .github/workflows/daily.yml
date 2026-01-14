@@ -2,26 +2,29 @@ name: Daily Vitamin Reminder
 
 on:
   schedule:
+    # This runs at 23:59 (11:59 PM) UTC every day.
+    # Note: GitHub Actions uses UTC time. 
     - cron: '59 23 * * *'
-  workflow_dispatch: 
+  workflow_dispatch:
+    # This allows you to run it manually from the "Actions" tab whenever you want.
 
 jobs:
-  send-sms:
+  send-reminder:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository code
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.x'
 
-      - name: Install dependencies
-        run: pip install requests
-
-      - name: Run script
+      - name: Run vitamin script
         env:
-          # This line connects your GitHub Secret to your Python script
+          # This maps your GitHub Secrets to environment variables for Python
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASS: ${{ secrets.GMAIL_APP_PASS }}
           MY_PHONE_NUMBER: ${{ secrets.MY_PHONE_NUMBER }}
         run: python main.py
